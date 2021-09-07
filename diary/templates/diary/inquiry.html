@@ -1,0 +1,38 @@
+{% extends 'diary/base.html'%}
+{% load static %}
+
+   {% block title %}aaaaa |Private Diary{% endblock %}
+    
+    
+        <!-- Content section 1--> 
+        {%block contents %}
+        <section id="scroll">
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.non_filed_errors}}
+                        {% for field in form %}
+                        <div class="form-group row">
+                            <label for="{{ field.id_for_label}}" class="col-sm-4 col-form-label">
+                                <strong>{{ field.label_tag}}</strong>
+                            </label>
+                            <div></div>
+
+                    </form>
+                        
+                </div>
+            </div>
+        </section>
+        </section>
+        {% endblock %}
+        <!-- Footer-->
+        <footer class="py-5 bg-black">
+            <div class="container px-5"><p class="m-0 text-center text-white small">Copyright &copy; Your Website 2021</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
