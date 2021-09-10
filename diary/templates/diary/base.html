@@ -37,14 +37,12 @@
         </nav>
         <!-- Header-->
         {% block header %}{% endblock %}
-        {% if messages%}
+       {<% if messages%}
         <div class="container"> 
-            {% for  msg in message%}
-            {{msg}}
-
+           
         </div>
         
-        {% endif %}
+        <!--e-->
         <!-- Content section 1-->
         {% block contents %}{% endblock %}      
         <!-- Footer-->
