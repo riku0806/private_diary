@@ -27,21 +27,24 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item{% block active_inquiry %}{% endblock %}">
-                            <a class="nav-link" href="{% url 'diary:inquiry' %}">inq</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Sign Up</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Log In</a></li>
+                        <li class="nav-item"> <a class="nav-link" href="{% url 'diary:inquiry' %}">inq</a</li>
+                         {%if user.is_authenticated %}
+                         <li class="nav-item"><a class="nav-link" href="{% url 'account_logout' %}">Log In</a></li>
+                         {% else %}    
+                        <li class="nav-item"><a class="nav-link" href="{% url 'account_signup' %}">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'account_login' %}">Log In</a></li>
+                        {% endif%}
                     </ul>
                 </div>
             </div>
         </nav>
         <!-- Header-->
         {% block header %}{% endblock %}
-       {<% if messages%}
+       {% if messages %}
         <div class="container"> 
            
         </div>
-        
+        {% endif %}
         <!--e-->
         <!-- Content section 1-->
         {% block contents %}{% endblock %}      
