@@ -34,3 +34,12 @@ class InquiryView(generic.FormView):
         logger.info('Inquiry sent by{}'.format(form.cleaned_data['name']))
         message.success(self.request, 'メッセージ')
         return super().form_valid(form)
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import Diary
+class DiaryListView(LoginRequiredMixin, generic.ListView): 
+    model =Diary
+    template_name='diary_list.html'
+    def get_queryset(self):
+        diaries =Diary.objects.filter(user=self.request.user).order_by('-created_at')
+        return diaries
