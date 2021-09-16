@@ -82,14 +82,13 @@ class DiaryUpdateView(LoginRequiredMixin, generic, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('diary:diary_detail', kwargs={'pk': self.kwargs['pk']})
+    def form_valid(self, form):
+        message.success(self.request, '日記')
+        return super().form_valid(form)
 
-        def form_valid(self, form):
-            message.success(self.request, '日記')
-            return super().form_valid(form)
-
-            def form_invalid(self, form):
-                messages.error(self.request, "失敗")
-                return super().form_invalid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, "失敗")
+        return super().form_invalid(form)
 
 
 class DiaryDeleteView(LoginRequiredMixin, generic.DeleteView):
