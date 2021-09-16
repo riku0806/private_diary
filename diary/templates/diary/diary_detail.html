@@ -29,17 +29,17 @@
             </div>
             <div class="col-3">
                 {% if object.photo1%}
-                <img src="{{ object.photo1.url}}" width="200">
+                <img src="{{object.photo1.url}}" width="200"/>
                 {% endif %}
     </div>
     <div class="col-3">
         {% if object.photo2%}
-        <img src="{{ object.photo2.url}}" width="200">
+        <img src="{{object.photo2.url}}" width="200"/>
         {% endif %}
 </div>
 <div class="col-3">
-    {% if object.photo3%}
-    <img src="{{ object.photo3.url}}" width="200">
+    {% if object.photo3 %}
+    <img src="{{object.photo3.url}}" width="200"/>
     {% endif %}
     </div>
     </div>
