@@ -1,3 +1,4 @@
+import diary
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Diary
 import re
@@ -12,23 +13,11 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic.edit import UpdateView
 from .forms import DiaryCreateForm, InquiryForm
+from django.contrib import messages
+from.forms import InquiryForm, DiaryCreateForm
 
 # Create your views here.
 logger = logging.getLogger(__name__)
-
-
-class IndexView(generic.TemplateView):
-    template_name = "diary/index.heml"
-
-
-class InquiryVie(generic.FormView):
-    template_name = "diary/inquiry.html"
-    form_class = InquiryForm
-    success_url = reverse_lazy('diary:inquiry')
-
-
-def index(request):
-    return render(request, 'diary/index.html')
 
 
 class IndexView(generic.TemplateView):
@@ -70,20 +59,39 @@ class DiaryDetailView(LoginRequiredMixin, generic.DetailView):
         message.success(self.request, '日記')
         return super().form_valid(form)
 
-        def form_invalid(self, form):
-            message.error(self.request, "日記の作成")
-            return super().form_invalid(form)
+    def form_invalid(self, form):
+        message.error(self.request, "日記の作成")
+        return super().form_invalid(form)
 
 
-class DiaryUpdateView(LoginRequiredMixin, generic, UpdateView):
+class DiaryCreateView(LoginRequiredMixin, generic.CreateView):
     model = Diary
-    template_name = 'diary_update.html'
+    template_name = 'diary/diary_create.html'
+    form_class = DiaryCreateForm
+    success_url = reverse_lazy("diary:diary_list")
+
+    def form_valid(self, form):
+        diary = form.save(commit=False)
+        diary.user = self.request.user
+        diary.save()
+        messages.success(self.request, '日記を作成')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "日記の作成を失敗")
+        return super().form_invalid(form)
+
+
+class DiaryUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Diary
+    template_name = 'diary/diary_update.html'
     form_class = DiaryCreateForm
 
     def get_success_url(self):
         return reverse_lazy('diary:diary_detail', kwargs={'pk': self.kwargs['pk']})
+
     def form_valid(self, form):
-        message.success(self.request, '日記')
+        messages.success(self.request, '日記')
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -93,9 +101,9 @@ class DiaryUpdateView(LoginRequiredMixin, generic, UpdateView):
 
 class DiaryDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Diary
-    template_name = 'diary_delete.html'
+    template_name = 'diary/diary_delete.html'
     success_url = reverse_lazy('diary:diary_list')
 
     def delete(self, request, *args, **kwargs):
-        message.success(self.request, "日記")
+        messages.success(self.request, "日記")
         return super().delete(request, *args, **kwargs)
